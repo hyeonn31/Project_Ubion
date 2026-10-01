@@ -1,0 +1,22 @@
+# 가상환경 / 캐시
+.venv/
+venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# 강의 배포 자료 (저작권)
+**/Doc/
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# 비밀 정보 / 데이터
+.env
+*.csv
+*.xlsx
+
+# OS
+Thumbs.db
+desktop.ini
