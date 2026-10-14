@@ -4,5 +4,8 @@
         "other": "on",
         "comments": "on",
         "strings": "on"
-    }
-}S
+    },
+    "python.defaultInterpreterPath": "C:/Users/hooho/miniconda3/python.exe",
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda"
+}
