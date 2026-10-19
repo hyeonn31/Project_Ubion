@@ -7,5 +7,9 @@
     },
     "python.defaultInterpreterPath": "C:/Users/hooho/miniconda3/python.exe",
     "python-envs.defaultEnvManager": "ms-python.python:conda",
-    "python-envs.defaultPackageManager": "ms-python.python:conda"
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python.analysis.typeCheckingMode": "off",
+    "cSpell.enabledFileTypes": {
+        "python": false
+    }
 }
