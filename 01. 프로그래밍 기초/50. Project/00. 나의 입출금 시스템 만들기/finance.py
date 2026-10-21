@@ -24,16 +24,12 @@ def empty_records() -> pd.DataFrame:     # -> : 반환 자료형 표시(타입 �
     # 데이터가 규칙에 맞는지 검사 → 틀리면 ValueError, 맞으면 정리된 표 반환
 def validate_records(frame:pd.DataFrame) -> pd.DataFrame:
 
-    # print(frame.columns)
-    # print(frame.columns.duplicated())
-
     # 1) 중복 컬럼 : 같은 이름이 하나라도 있으면 에러
     if frame.columns.duplicated().any():
         raise ValueError("동일한 컬럼 이름이 중복되었습니다.")
 
     # 2) 필수 컬럼 : COLUMNS 중 frame에 없는 이름만 모으기 (다 있으면 [])
     missing = [name for name in COLUMNS if name not in frame.columns]
-    print(missing)   # ⚠ 디버깅용 → 출력에 [] 가 찍히는 원인
     if missing:      # 빈 리스트면 False
         raise ValueError("필수 컬럼이 없습니다: " + ", " .join(missing))   # ['금액'] → "금액"
 
@@ -86,7 +82,7 @@ def validate_records(frame:pd.DataFrame) -> pd.DataFrame:
         if not mask.all():   # 하나라도 False면
             # ~mask : 뒤집기 → 틀린 행 번호(1부터), 최대 10개
             rows= [str(i + 1) for i in clean. index[~mask ] [ : 10] ]
-            raise ValueError(f"{label}를 확인하세요. 잘못된 데이터 행: {', '.join(rows)}")
+            raise ValueError(f"[{label}] 조건을 확인하세요. 잘못된 데이터 행: {', '.join(rows)}")
 
     # 9) 통과 → 날짜는 "YYYY-MM-DD" 글자로, 금액은 정수로
     clean['날짜'] = dates.dt.strftime("%Y-%m-%d").astype("string")
@@ -96,7 +92,8 @@ def validate_records(frame:pd.DataFrame) -> pd.DataFrame:
 
 # data 폴더의 샘플 CSV를 읽고 검증까지 해서 반환
 def load_sample() -> pd.DataFrame:
-    path = Path.cwd() / "data" / "sample_transactions.csv"   # (현재 폴더)/data/파일
+    path = Path(__file__).parent / "data" / "sample_transactions.csv"   # (이 파일이 있는 폴더)/data/파일
+    # __file__ : 지금 실행 중인 파이썬 파일의 경로 → 어느 폴더에서 실행해도 샘플을 찾을 수 있음
     if not path.exists():    # 파일이 없으면 알아보기 쉬운 에러
         raise FileNotFoundError(
             f"샘플 파일을 찾을 수 없습니다. {path}\n"
