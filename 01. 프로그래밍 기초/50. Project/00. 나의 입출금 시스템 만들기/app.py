@@ -94,9 +94,11 @@ st.title("나의 입출금 정리표 만들기")                                
 st.write("내역을 입력하고, 월별 흐름과 지출 항목을 한눈에 확인하세요.")   # 일반 글
 st.caption("처음 보이는 18건은 가상 학습 데이터 입니다. 남은 금액은 기간 내 수입-지출이며 통장 잔액이 아닙니다.")
 
-# 저장 직후 한 번만 안내 메시지 표시 (위에서 꺼내 둔 message, 초록색 박스)
+# 저장 직후 한 번만 안내 메시지 표시 (위에서 꺼내 둔 message)
+# st.success : 페이지 위쪽 초록색 박스 / st.toast : 화면 오른쪽 아래 팝업 (스크롤 위치와 상관없이 보임)
 if message:
     st.success(message)
+    st.toast(message)
 
 # 파생변수 만들기
 # 저장된 전체 내역에 "월", "표시" 열 추가 (큰 지출 기준은 사이드바에서 입력한 threshold)
@@ -248,12 +250,73 @@ with management:
         except ValueError as exc:
             st.error(str(exc))
 
+    duplicate_count = int(st.session_state.records.duplicated(). sum())
+    if duplicate_count:
+        st.warning(f"완전히 같은 내역 {duplicate_count}건이 있습니다. 실제 반복 거래일 수도 있어 자동 삭제하지 않습니다.")
 
-# ═════════════════════════ 6. 탭③ CSV 가져오기·다운로드 (다음 단계에서 구현) ═════════════════════════
+
+    with st.expander("조회 내역만 필터링하기"):
+        view_kind = st.selectbox("조회 구분",["전체","수입","지출"],key="view_kind")
+        view_categories = st.multiselect("조회 항목(비우면 전체)",sorted(filtered["항목"].unique()),key="view_categories")
+        
+        view=filtered.copy()
+        if view_kind != "전체":
+            view = view[view["구분"] == view_kind]
+            
+        if view_categories:
+            view = view[view["항목"].isin(view_categories)]
+        
+        st.dataframe(view, hide_index=True,width="stretch")
+        st.caption("이 두 필터는 위의 조회 표에만 적용됩니다. 상단 KPI 요약 다운로드는 기간 필터만 적용됩니다.")
+        
+# ═════════════════════════ 6. 탭③ CSV 가져오기·다운로드 ═════════════════════════
 with files:
-    pass        # read_csv_bytes(업로드), csv_bytes(다운로드)를 여기서 사용할 예정
+    # read_csv_bytes(업로드), csv_bytes(다운로드)를 여기서 사용
+    st.subheader("CSV 가져오기")
+    st.info("공유 미리보기에는 실제 거래·이름·계좌번호를 올리지 마세요. 개인 자료는 로컬 실행에서 비식별화 후 사용하세요.")
+    st.caption("필수 컬럼: 날짜, 구분, 항목, 금액 / 쉼표 구분 / UTF-8 또는 CP949 / 최대 5MB·5,000행. 추가 컬럼은 버립니다.")      
+    uploaded = st.file_uploader("입출금 csv 선택",type=["csv"], key="upload")
+    if uploaded is not None:
+        try:
+            candidate = read_csv_bytes(uploaded.getvalue())
+            st.dataframe(candidate.head(10), hide_index=True, width="stretch")
+            st.caption(f"검증 완료: {len(candidate):,}건. 적용 버튼을 눌러야 현재 내역에 반영됩니다.")
+            mode = st.radio("반영 방식", ["기존 내역에 추가","전체 내역 교체"],horizontal=True, key="import_mode")
+            if st.button("CSV 반영", key="apply_csv", type="primary"):
+                result = candidate if mode == "전체 내역 교체" else pd.concat([st.session_state.records, candidate])
+                save_records(result ,f"CSV {len(candidate):,}건을 반영했습니다.")
+        except ValueError as exc:
+            st.error(str(exc))
+            
+    st.subheader("다운로드")
+    st.caption("전체 백업은 모든 내역, 요약 파일 3개는 사이드바에서 고른 기간 기준입니다.")
+    x,y = st.columns(2)
+    x.download_button("전체 내역 CSV 백업", csv_bytes(st.session_state.records),"입출금_전체내역.csv","text/csv",\
+        key="download_all",width="stretch")
+    y.download_button("가상 예제 CSV", csv_bytes(load_sample()),"입출금_연습용.csv","text/csv",\
+        key="download_sample",width="stretch")
+    
+    p, q, r = st.columns(3)
+    p.download_button("조회 내역 CSV", csv_bytes(filtered), "입출금_조회내역.csv", "text/csv", key="download_filtered", width="stretch")
+    q.download_button("항목별 지출 CSV", csv_bytes(categorise), "항목별지출.csv", "text/csv", key="download_categories", width="stretch")
+    r.download_button("월별 요약 CSV", csv_bytes(monthly), "월별요약.csv", "text/csv", key="download_monthly", width="stretch")
+    st.caption("영구 저장 DB는 없습니다. 새로고침·연결 종료에 대비해 전체 CSV를 내려받으세요.")
 
-
-# ═════════════════════════ 7. 탭④ 코드 학습 (다음 단계에서 구현) ═════════════════════════
+# ═════════════════════════ 7. 탭④ 코드 학습 ═════════════════════════
 with lesson:
-    pass
+    st.subheader("기존 pandas 수업과의 연결")
+    st.code('''# 수입 / 지출 분리
+income = df[df["구분"] == "수입"]
+expenses = df[df["구분"] == "지출"]
+
+# 항목별 지출 합계
+totals = expenses.groupby("항목")["금액"].sum()
+
+# 월별 수입 / 지출 피벗
+df["월"] = df["날짜"].str[:7]
+monthly = df.pivot_table(index="월", columns="구분",
+                        values="금액", aggfunc="sum", fill_value=0)
+monthly = monthly.reindex(columns=["수입", "지출"], fill_value=0)
+monthly["남은금액"] = monthly["수입"] - monthly["지출"]''', language="python")
+    st.write("app.py는 화면·세션 상태를, finance.py는 검증·파생열·집계·CSV 변환을 담당합니다.")
+    st.caption("프런트 코드이지만 Streamlit 특성상 화면과 Python 계산은 서버에서 함께 실행됩니다. 별도 API·인증·계좌 연동은 없습니다.")
