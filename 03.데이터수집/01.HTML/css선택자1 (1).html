@@ -1,0 +1,32 @@
+<!--
+인라인 방식: HTML 태그 안에 style 속성을 사용하여 적용하는 방식
+인터널 방식: HTML 문서 안에 <style> 태그를 사용하여 적용하는 방식
+익스터널 방식: CSS 파일을 생성하여 HTML 문서와 연동시키는 방식 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!--2. 인터널 방식-->
+    <style>
+        h1{
+            color: red;
+        }
+    </style>
+
+    <!-- 3. 익스터널 방식-->
+    <link rel = "stylesheet" href = "style.css">
+</head>
+<body>
+    <h1>안녕하세요.</h1>
+
+    <!--1.인라인 방식-->
+    <h1 style="background-color: yellow;"> Hello World</h1> 
+    
+    <h2>행복합니다.</h2>
+</body>
+</html>

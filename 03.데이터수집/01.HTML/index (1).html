@@ -1,0 +1,121 @@
+<!DOCTYPE html>   <!--HTML5기준으로 작성됨-->
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <title>데이터 분석</title>
+    </head>
+    <body>
+        안녕하세요 <br>
+        좋은 날씨입니다.
+
+         <!-- 글씨 크기 설정 -->
+        <h1>Hello World</h1>
+        <h2>Hello World</h2>
+        <h3>Hello World</h3>
+        <h4>Hello World</h4>
+        <h5>Hello World</h5>
+        <h6>Hello World</h6>
+        <br>
+
+        <ul>
+            <li>순서가 없는</li>
+            <li>순서가 없는</li>
+            <li>순서가 없는</li>
+        </ul>
+
+        <ol>
+            <li>순서가 있는</li>
+            <li>순서가 있는</li>
+            <li>순서가 있는</li>
+        </ol>
+
+        <ol start="3" type="a">  <!--type유형 : A, a, 1, i, I-->
+            <li>강아지</li>
+            <li>고양이</li>
+            <li>거북이</li>
+            <li>햄스터</li>
+        </ol>
+
+        <!--하이퍼링크-->
+        <!--href : Hypertext Reference-->
+        <a href="http://www.naver.com">네이버</a>
+        <a href="http://www.daum.net">다음</a>
+        <a href="http://www.google.com">구글</a>
+        <br><br>
+
+         <!--target window-->
+         <!--title:Tooltip, target="_self" : 윈도우가 자기 자신, target="_target" : 다른 윈도우 실행-->
+        <a href="http://www.naver.com" target="_self" title="네이버로 이동">네이버_self</a>
+        <a href="http://www.naver.com" target="_target" title="네이버로 이동">네이버_target</a>
+        <br><br>
+
+        <!--image 불러오기-->
+        <!--alt="회사 로고":alternative text(대체 텍스트)-->
+         <img src="./img/dog.png" width="300px" height="300px" alt="회사 로고"> 
+
+        <!--HTML 코드와 공백-->
+        <p>삶이 그대를             속일지라도</p>
+        <p>삶이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;그대를속일지라도</p>
+
+        <pre>
+
+            name = '홍길동'
+
+        </pre>
+
+        <!--텍스트 구조화 태그들-->
+        <p>문단을 나타냄</p>
+        <p>화면상 구분 용이</p>
+
+        <!--텍스트 강조-->
+        <strong>인라인 텍스트</strong>
+
+        <!--이탤릭체 텍스트 표시-->
+        <em>기울어짐</em>
+
+        <!--컨테이너 태그-->
+        <div>
+            <p>행복하고 즐거워요~</p>
+            <p>HTML 공부!</p>
+        </div>
+
+        <hr>
+
+        <!--표 만들기-->
+        <table border="1">
+            <tr>
+                <th>한국 선수</th>           
+                <th>미국 선수</th>      
+            </tr>                
+            <tr>
+                <td>김철수</td>
+                <td>제임스</td>
+            </tr>
+            <tr>
+                <td>김철수</td>
+                <td>제임스</td>
+            </tr>
+        </table>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>한국 선수</th>           
+                    <th>미국 선수</th>      
+                </tr>  
+            </thead> 
+            <tbody>
+                <tr>
+                    <td>김철수</td>
+                    <td>제임스</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                  <td>세계 랭킹 5위</td>
+                  <td>세계 랭킹 2위</td>
+                </tr>
+            </tfoot>         
+        </table>
+    </body>
+</html>
