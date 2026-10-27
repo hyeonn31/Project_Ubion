@@ -2,8 +2,6 @@
 
 대상: `app.py` (Streamlit UI) + `finance.py` (도메인 로직)
 
-> 참고: `finance.py` 소스는 확인하지 못했고, `app.py`의 import·호출 방식과 화면 안내 문구를 근거로 함수 역할을 정리했습니다.
-
 ---
 
 ## 1. 시스템 컨텍스트 (C4 Level 1)

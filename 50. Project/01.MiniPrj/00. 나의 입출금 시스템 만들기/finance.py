@@ -187,3 +187,4 @@ def csv_bytes(frame:pd.DataFrame) -> bytes:
     # index=False : 행 번호 빼기 / na_rep='' : 빈 값은 빈칸
     # utf-8-sig : 엑셀에서 한글이 안 깨지게 (맨 앞에 BOM)
     return safe.to_csv(index= False, na_rep='',encoding=None).encode("utf-8-sig")
+
