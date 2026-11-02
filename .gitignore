@@ -20,3 +20,9 @@ __pycache__/
 # OS
 Thumbs.db
 desktop.ini
+
+# 외부 샘플 DB (용량 큼, 원본: github.com/datacharmer/test_db)
+**/employees/
+
+# macOS 메타데이터
+._*
