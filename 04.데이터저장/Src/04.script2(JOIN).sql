@@ -3,6 +3,8 @@
 # 데이터를 옆으로 합치기(컬럼 증가)
 ##################################################
 -- 1. INNER JOIN : 두 테이블에서 조건이 일치하는 행(교집합)
+USE sqldb;
+
 SELECT u.userID, u.name, u.birthYear
 FROM usertbl u;
 
