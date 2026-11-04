@@ -51,6 +51,7 @@ SELECT
     from_date, -- 급여 적용 시작일
     to_date    -- 급여 적용 종료일
 FROM salaries
+WHERE emp_no = '10001'
 ORDER BY from_date;
 
 -- 퇴직금 추정: 마지막 3개월 평균 급여 × 근속연수

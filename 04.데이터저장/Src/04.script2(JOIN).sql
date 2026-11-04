@@ -14,7 +14,6 @@ FROM usertbl u
 INNER JOIN buytbl b ON u.userID = b.userID
 ORDER BY u.userID;
 
-
 -- 2. LEFT JOIN : 왼쪽 테이블 전체를 기준으로, 오른쪽 테이블에 일치하는 행이 없으면 NULL로 채움
 -- usertbl을 기준으로 구매내역을 포함
 SELECT u.userID, u.name, u.birthYear, b.prodName, b.price, b.amount
