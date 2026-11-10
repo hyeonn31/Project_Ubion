@@ -26,3 +26,6 @@ desktop.ini
 
 # macOS 메타데이터
 ._*
+
+# 외부 데이터셋 (용량 큼, UCI Human Activity Recognition)
+05.머신러닝/Src/human_activity/
